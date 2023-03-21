@@ -1,21 +1,24 @@
 package com.smartfarm.controllermanagement.listener;
 
+import com.smartfarm.controllermanagement.model.IotSensorProcessedDto;
 import com.smartfarm.controllermanagement.service.ControllerManagementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import static com.smartfarm.controllermanagement.config.KafkaConsumerConfig.GROUP_ID;
+import static com.smartfarm.controllermanagement.config.KafkaConsumerConfig.PROCESSED_DATA_TOPIC;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProcessedDataListener {
 
-    private final String PROCESSED_DATA_TOPIC = "iot-processed-data";
     private final ControllerManagementService controllerManagementService;
 
-    @KafkaListener(topics = PROCESSED_DATA_TOPIC, groupId = "groupId")
-    public void listen(String data) {
+    @KafkaListener(topics = PROCESSED_DATA_TOPIC, groupId = GROUP_ID)
+    public void listen(IotSensorProcessedDto data) {
         log.info("Processed data: {} is received", data);
         controllerManagementService.createInstruction(data);
     }

@@ -9,5 +9,4 @@ public class ControllerManagementServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ControllerManagementServiceApplication.class, args);
     }
-
 }
