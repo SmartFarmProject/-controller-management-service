@@ -1,1 +1,2 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/SmartFarmProject/controller-management-service/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/SmartFarmProject/controller-management-service/tree/master)
 # Controller Management Service
