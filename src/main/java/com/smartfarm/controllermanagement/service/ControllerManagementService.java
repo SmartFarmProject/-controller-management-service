@@ -1,7 +1,7 @@
 package com.smartfarm.controllermanagement.service;
 
 import com.smartfarm.controllermanagement.model.IotSensorInstructionDto;
-import com.smartfarm.controllermanagement.model.IotSensorProcessedDto;
+import com.smartfarm.sensordata.model.IotSensorProcessedDto;
 import com.smartfarm.controllermanagement.model.NotificationDto;
 import com.smartfarm.controllermanagement.producer.ControllerInstructionsProducer;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
 package com.smartfarm.controllermanagement.config;
 
+import com.smartfarm.controllermanagement.model.IotSensorInstructionDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,12 +31,12 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, IotSensorInstructionDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerProperties());
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+    public KafkaTemplate<String, IotSensorInstructionDto> kafkaTemplate(ProducerFactory<String, IotSensorInstructionDto> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 }

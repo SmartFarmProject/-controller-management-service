@@ -1,4 +1,4 @@
-package com.smartfarm.controllermanagement.model;
+package com.smartfarm.sensordata.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IotSensorProcessedDto {
+public class IotSensorProcessedDto implements Serializable {
 
     private String sensorId;
     private String type;
