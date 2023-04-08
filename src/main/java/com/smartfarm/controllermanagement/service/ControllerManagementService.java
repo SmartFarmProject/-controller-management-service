@@ -16,27 +16,38 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ControllerManagementService {
 
+    private static final String LIGHT_SENSOR_TYPE = "LIGHT";
+    private static final String SOIL_HUMIDITY_SENSOR_TYPE = "SOIL_HUMIDITY";
+
+
     private final NotificationService notificationService;
     private final ControllerInstructionsProducer controllerInstructionsProducer;
 
     public void createInstruction(IotSensorProcessedDto data) {
-        controllerInstructionsProducer.sendMessage(prepareInstruction(data));
-
-        sendLightSwitchedNotification();
+        if (data.getType().equals(LIGHT_SENSOR_TYPE)) {
+            IotSensorInstructionDto iotSensorInstructionDto = prepareSwitchLightInstruction(data);
+            controllerInstructionsProducer.sendMessage(iotSensorInstructionDto);
+            notificationService.sendNotification(iotSensorInstructionDto);
+        } else if (data.getType().equals(SOIL_HUMIDITY_SENSOR_TYPE)) {
+            IotSensorInstructionDto iotSensorInstructionDto = prepareSwitchWaterInstruction(data);
+            controllerInstructionsProducer.sendMessage(iotSensorInstructionDto);
+            notificationService.sendNotification(iotSensorInstructionDto);
+        }
     }
 
-    private IotSensorInstructionDto prepareInstruction(IotSensorProcessedDto data) {
+    private IotSensorInstructionDto prepareSwitchLightInstruction(IotSensorProcessedDto data) {
         return IotSensorInstructionDto.builder()
                 .farmUnitId(data.getFarmUnitId())
-                .switchLight(new Random().nextBoolean()) // todo: add some logic for this
-                .switchWater(new Random().nextBoolean()) // todo: add some logic for this
+                .switchLight(data.getValue() > 400)
+                .switchWater(false)
                 .build();
     }
 
-    private void sendLightSwitchedNotification() {
-        notificationService.sendNotification(NotificationDto.builder()
-                .id(UUID.randomUUID().toString())
-                .text("Light is switched")
-                .build());
+    private IotSensorInstructionDto prepareSwitchWaterInstruction(IotSensorProcessedDto data) {
+        return IotSensorInstructionDto.builder()
+                .farmUnitId(data.getFarmUnitId())
+                .switchLight(false)
+                .switchWater(data.getValue() > 40)
+                .build();
     }
 }

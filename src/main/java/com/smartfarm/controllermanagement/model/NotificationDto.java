@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NotificationDto {
 
-    private String id;
+    private String farmUnitId;
     private String text;
 }
