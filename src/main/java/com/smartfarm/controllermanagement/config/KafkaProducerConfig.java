@@ -21,22 +21,17 @@ public class KafkaProducerConfig {
     private String bootstrapServers;
     public static final String INSTRUCTION_TOPIC = "instruction-data-event";
 
-    public Map<String, Object> producerProperties() {
+    @Bean
+    public ProducerFactory<String, IotSensorInstructionDto> producerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-
-        return props;
+        return new DefaultKafkaProducerFactory<>(props);
     }
 
     @Bean
-    public ProducerFactory<String, IotSensorInstructionDto> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerProperties());
-    }
-
-    @Bean
-    public KafkaTemplate<String, IotSensorInstructionDto> kafkaTemplate(ProducerFactory<String, IotSensorInstructionDto> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
+    public KafkaTemplate<String, IotSensorInstructionDto> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 }
