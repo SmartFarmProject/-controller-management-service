@@ -44,10 +44,9 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, IotSensorProcessedDto>> listenerFactory(
-            ConsumerFactory<String, IotSensorProcessedDto> consumerFactory) {
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, IotSensorProcessedDto>> listenerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, IotSensorProcessedDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory);
+        factory.setConsumerFactory(consumerFactory());
 
         return factory;
     }
