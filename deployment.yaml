@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller-management-service
+  labels:
+    app: controller-management-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: controller-management-service
+  template:
+    metadata:
+      labels:
+        app: controller-management-service
+    spec:
+      containers:
+        - name: controller-management-service
+          image: thebestsmartfarm/controller-management-service
+          env:
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092"
+            - name: SPRING_CLOUD_DISCOVERY_ENABLED
+              value: 'false'
+            - name: SPRING_CLOUD_GATEWAY_ENABLED
+              value: 'false'
+            - name: SMART_FARM_NOTIFICATION_SERVICE_HOST
+              value: "http://notification-service:8083"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: controller-management-service
+spec:
+  selector:
+    app: controller-management-service
+  ports:
+    - protocol: TCP
+      port: 9092
+#      targetPort:
